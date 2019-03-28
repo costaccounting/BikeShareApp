@@ -5,7 +5,17 @@
   </h1>  
 </div>
 <h2> </h2>
-<input [value]="maxDist" (input)="maxDist=$event.target.value" />
+<button (click)="getMyLocation()">Use your own location</button><br>
+
+<p>Enter Maximum Distance</p>
+<input [value]="maxDist" (input)="maxDist=$event.target.value" placeholder = "KM"/><span>KM</span><br>
+<p>Enter Required docks</p>
+<input [value]="minDock" (input)="minDock=$event.target.value" placeholder = "docks"/><br>
+<p>Enter Required Bikes</p>
+<input [value]="minBike" (input)="minBike=$event.target.value" placeholder = "bikes"/><br>
+
+
+
 <button (click)="findLarge()">Find Large Bikeshare</button><br>
 <button (click)="findDocks()">Find Available Docks near you</button><br>
 <button (click)="findBikes()">Find Available Bikes near you</button><br>

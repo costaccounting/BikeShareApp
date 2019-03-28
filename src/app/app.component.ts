@@ -12,7 +12,7 @@ import {} from 'googlemaps';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'Assignment 2';
+  title = 'BikeShare';
   bikedata: any = [];
   show: boolean = false;
   infoWindow : any = '';
@@ -29,6 +29,7 @@ export class AppComponent implements OnInit{
   
   constructor( private getbikedata: GetListService, private getDist: GetDistService ) {}
   ngOnInit() {
+        console.log(this.mylng);
         this.getbikedata.getJSON().subscribe(
 			data => { 
 				this.bikedata = data as string []; 
@@ -49,8 +50,21 @@ export class AppComponent implements OnInit{
 		};
 		this.map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
   }
+  getMyLocation(){
+    navigator.geolocation.getCurrentPosition( pos => {
+        this.mylng =+ pos.coords.longitude;
+        this.mylat =+ pos.coords.latitude;
+      });
+      console.log(this.mylng);
+  }
   findLarge(){
-        //console.log(this.maxDist);
+        this.mapProp = {
+			center: new google.maps.LatLng(this.mylat,this.mylng),
+			zoom: 13,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		this.map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
+        
 	  
 	  for(var i=0; i<this.bikedata.stationBeanList.length ; i++){
             
@@ -69,6 +83,12 @@ export class AppComponent implements OnInit{
 	  
   }
   findDocks(){
+    this.mapProp = {
+			center: new google.maps.LatLng(this.mylat,this.mylng),
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		this.map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
      
     for(var i=0; i<this.bikedata.stationBeanList.length ; i++){
 		  var loc = this.bikedata.stationBeanList[i];
@@ -90,6 +110,12 @@ export class AppComponent implements OnInit{
   }
   
   findBikes(){
+    this.mapProp = {
+			center: new google.maps.LatLng(this.mylat,this.mylng),
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		this.map = new google.maps.Map(this.gmapElement.nativeElement, this.mapProp);
     for(var i=0; i<this.bikedata.stationBeanList.length ; i++){
 		  var loc = this.bikedata.stationBeanList[i];
           console.log(loc.stationName + " " + this.getDist.calc(loc.latitude, loc.longitude, this.mylat, this.mylng));
